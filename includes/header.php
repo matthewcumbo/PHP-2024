@@ -1,3 +1,4 @@
+<!-- Header to be included in every page -->
 <!doctype html>
 <html lang="en">
   <head>

@@ -24,13 +24,16 @@
                 <div class="card-body">
                     <h5 class="card-title">
                         <?php
-                          // Output of Variable 
+                          // Output of Variables using interpolation
                           echo "{$name} ({$age})"; 
                           echo "In 5 years, I will be {$ageInFiveYears}.";
                           ?>
-                        <?php //echo $name . " (" . $age . ")"; ?>
+                        <?php 
+                          // Output of Variables using concatenation
+                          // echo $name . " (" . $age . ")"; ?>
                     </h5>
                     <p class="card-text">
+                        <!-- Output of Variables using concatenation -->
                         <?php echo "Favourite Colour: <span style='color:".$favCol.";'>".$favCol."</span>";?>
                     </p>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
@@ -101,7 +104,10 @@
   shout();
   shout();
 
+  // If a function requires parameters (values), we pass them like this
   sum(1,2);
+
+  // We can capture any returned value from a functions like this
   $fullName = full_name("Matthew", "Cumbo");
   echo "<p>My full name is {$fullName}.</p>";
 ?>

@@ -3,9 +3,11 @@
 require_once "dbh.php";
 require_once "functions.php";
 
-
+// We get a list of all Users from the loadUsers function
 $results = loadUsers($conn);
 
+// The mysqli_fetch_assoc function gets the next row in the results, starting with the first one
+// While there is still more rows to go through, execute the following code 
 while ($row = mysqli_fetch_assoc($results)){
     $userId = $row["userId"];
     $username = $row["username"];

@@ -79,6 +79,8 @@
                         <div class="row mt-1">
                             <div class="col">
                                 <?php 
+                                    // If the code in login-inc.php redirected back to this page with error codes in the QueryString,
+                                    // we can check the values of the QueryString to show errors to the user
                                     if(isset($_GET["emptyinput"])){
                                         echo "<p>Please fill in all fields.</p>";
                                     }

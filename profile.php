@@ -1,12 +1,15 @@
 <?php 
 include 'includes/header.php'; 
 
+
 if(isset($_SESSION["userId"])){
+    // If user is logged in, load user data of logged in user
     $userId = $_SESSION["userId"];
     include 'includes/profile-inc.php';
 }
 else{
-    header("location:register.php");
+    // If user is not logged in, redirect to login page
+    header("location:login.php");
     exit();
 }
 
@@ -24,6 +27,10 @@ else{
                     <?php if(isset($user["imageUrl"])) : ?>
                     <div class="row">
                         <div class="col-12">
+                            <!-- 
+                                When we store imageUrls in the databse, we can use that as the source for images in our HTML
+                                In this case, we are trimming the first part of the URL since it is not needed here
+                            -->
                             <img src="<?php echo substr($user["imageUrl"],3); ?>" alt="User's uploaded image" style="width:100px;height:auto;display:block;">
                         </div>
                     </div>
@@ -33,6 +40,7 @@ else{
                             <label for="email">Email Address:</label>
                         </div>
                         <div class="col-6">
+                            <!-- We can use the data returned from the profile-inc.php file to output in our HTML -->
                             <p id="email" name="email"><?php echo $user["email"]; ?></p>
                         </div>
                     </div>
@@ -82,6 +90,7 @@ else{
                 
                 Profile Picture: <input type="file" name="userFile" id="userFile">
                 
+                <!-- The value of the submit button can be used to verify which form is posted to the back-end code -->
                 <button type="submit" name="submit" id="submit" class="btn btn-primary" value="upload">Upload</button>
             </form>
         </div>

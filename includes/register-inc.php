@@ -3,6 +3,8 @@
 require_once "dbh.php";
 require_once "functions.php";
 
+// If the user tries to execute this code without posting the form, 
+// they are redirected back to the registration page
 if(isset($_POST["submit"])){
     $email = $_POST["email"];
     $username = $_POST["username"];
@@ -42,11 +44,13 @@ if(isset($_POST["submit"])){
         $errorQueryString.="&userExists=true";
     }
 
+    // If any error is present, redirect to the Registration page with an error in the QueryString
     if($errorQueryString !== ""){
         header("location: ../register.php?".$errorQueryString);
         exit();
     }
 
+    // Call the registerUser function to save the user's data in the database
     registerUser($conn,$username,$password,$email,$firstName,$lastName,$dob,null);
 
     header("location: ../register.php?success=true");

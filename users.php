@@ -1,6 +1,9 @@
 <?php include 'includes/header.php'; ?>
 
 <?php 
+// If user is not logged in, redirect to login page
+// $_SESSION global variable is used to store temporary data on the server
+// In this case, we are using it to store data about the logged in user
 if (!isset($_SESSION["username"])){
     header("location: login.php");
     exit();
@@ -14,10 +17,6 @@ if (!isset($_SESSION["username"])){
         </div>
     </div>
 </div>
-
-
-
-
 
 <div class="container">
     <div class="row">

@@ -6,6 +6,8 @@ session_start();
 $username = $_SESSION["username"];
 $userId = $_SESSION["userId"];
 
+// If the user tries to execute this code without posting the form, 
+// they are redirected back to the profile page
 if(isset($_POST["submit"])){
     $email = $_POST["email"];
     $password = $_POST["password"];
@@ -40,11 +42,13 @@ if(isset($_POST["submit"])){
         $errorQueryString.="&passwordsdonotmatch=true";
     }
 
+    // If any error is present, redirect to the Profile page with an error in the QueryString
     if($errorQueryString !== ""){
         header("location: ../profile.php?".$errorQueryString);
         exit();
     }
 
+    // Call the editUser function to update the user's data in the database
     editUser($conn,$userId,$password,$email,$firstName,$lastName,$dob);
 
     header("location: ../profile.php?success=true");
