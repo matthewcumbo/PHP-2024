@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <form action="includes/register-inc.php" method="POST">
+            <form action="includes/editUser-inc.php" method="POST">
                 <div class="container my-1 py-2">
                     <div class="row">
                         <div class="col-6 text-end">
@@ -23,7 +23,7 @@
                             <label for="username">Username:</label>
                         </div>
                         <div class="col-6">
-                            <input type="text" id="username" name="username">
+                            <input type="text" id="username" name="username" disabled value="<?php echo $_SESSION["username"]; ?>">
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -39,7 +39,7 @@
                             <label for="confpass">Confirm Password:</label>
                         </div>
                         <div class="col-6">
-                            <input type="text" id="confpass" name="confpass">
+                            <input type="password" id="confpass" name="confpass">
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -115,7 +115,7 @@
     </div>
     <div class="row">
         <div class="col text-center">
-            <form action="" method="POST">
+            <form action="includes/delete-inc.php" method="POST">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </div>

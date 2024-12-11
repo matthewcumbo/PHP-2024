@@ -39,7 +39,7 @@
     }
 
     function loadUser($conn, $userId){
-        $sql = "SELECT * FROM user WHERE userId = ?;";
+        $sql = "SELECT u.*, i.imageUrl FROM user AS u LEFT JOIN image AS i ON u.userId = i.userId WHERE u.userId = ?;";
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt,$sql)){
             header("location: ../profile.php?error=stmtfailed");
@@ -104,7 +104,7 @@
     // Validation functions
     function emptyInputRegistration($email, $username, $password, $confpass, $firstname, $lastname, $dob){
         $result = false;
-
+        
         if(empty($email) || empty($username) || empty($password) || empty($confpass) || empty($firstname) || empty($lastname) || empty($dob)){
             $result = true;
         }
@@ -178,6 +178,81 @@
 
         header("location: ../profile.php");
         exit();
+    }
+
+    function insertImageUrl($conn, $userId, $imageUrl){
+        $user = loadUser($conn, $userId);
+        if(!$user){
+            header("location: ../profile.php?error=userDoesNotExist");
+            exit();
+        }
+
+        $sql = "INSERT INTO image (userId, imageUrl) VALUES (?,?);";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            header("location: ../profile.php?error=true&stmtfailed=true");
+            exit();
+        }
+
+        mysqli_stmt_bind_param($stmt, "ss", $userId, $imageUrl);
+
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    
+        return $conn->insert_id;
+    }
+
+    function createImageLink($conn, $userId, $imageId){
+        $user = loadUser($conn, $userId);
+        if(!$user){
+            header("location: ../profile.php?error=userDoesNotExist");
+            exit();
+        }
+
+        $sql = "UPDATE user SET profileImageId = ? WHERE userId = ?;";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            header("location: ../profile.php?error=true&stmtfailed=true");
+            exit();
+        }
+
+        mysqli_stmt_bind_param($stmt, "ss", $imageId, $userId);
+
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+
+
+    function editUser($conn, $userId, $password, $email, $firstName, $lastName, $dob){
+        $sql = "UPDATE user SET password = ?, email = ?, firstName = ?, lastName = ?, dob = ? WHERE userId = ?;";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            header("location: ../register.php?error=true&stmtfailed=true");
+            exit();
+        }
+
+        // Hashed Password for security
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        mysqli_stmt_bind_param($stmt, "ssssss", $hashedPassword, $email, $firstName, $lastName, $dob, $userId);
+
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+
+    }
+
+    function deleteUser($conn, $userId){
+        $sql = "DELETE FROM user WHERE userId = ?;";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            header("location: ../profile.php?error=true&stmtfailed=true");
+            exit();
+        }
+
+        mysqli_stmt_bind_param($stmt, "s", $userId);
+
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
     }
 
 

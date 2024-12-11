@@ -5,13 +5,12 @@ require_once "functions.php";
 if(!isset($_POST["submit"])){
     // Page loaded
     $user = loadUser($conn, $userId);
-
     $username = $user["username"];
 }
 else{
     // Form posted
     session_start();
-    if($_POST["submit"] === "upload"){       
+    if($_POST["submit"] === "upload"){
         $userId = $_SESSION["userId"];
         
         $fileName = $_FILES["userFile"]["name"];
@@ -34,9 +33,10 @@ else{
             header("location: ../profile.php?error=fileUpload");
             exit();
         }
-        if($fileSize > x§){
-            // 1mb = 1024kb
-            // size : 1 = 100mb 
+        if($fileSize > 1000000000){
+            // Calculated in bytes
+            // 1024 bytes = 1kb
+            // 1024kb = 1mb
             header("location: ../profile.php?error=fileSize");
             exit();
         }
@@ -47,7 +47,11 @@ else{
 
         move_uploaded_file($fileTmpName, $uploadDir);
 
-        header("../profile.php?success=true");
+        $imageId = insertImageUrl($conn, $userId, $uploadDir);
+        createImageLink($conn, $userId, $imageId);
+
+
+        header("location: ../profile.php?success=true");
         exit();
     }
 }

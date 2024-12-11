@@ -2,10 +2,12 @@
 // we need database handler and functions to be able to connect to db
 require_once "dbh.php";
 require_once "functions.php";
+session_start();
+$username = $_SESSION["username"];
+$userId = $_SESSION["userId"];
 
 if(isset($_POST["submit"])){
     $email = $_POST["email"];
-    $username = $_POST["username"];
     $password = $_POST["password"];
     $confpass = $_POST["confpass"];
     $firstName = $_POST["firstname"];
@@ -19,10 +21,9 @@ if(isset($_POST["submit"])){
     $invalidUsername = invalidUsername($username);
     $invalidEmail = invalidEmail($email);
     $passwordsMatch = passwordsMatch($password, $confpass);
-    $userExists = userExists($conn, $username);
 
     // Build QueryString errors 
-    if($emptyInputs || $invalidUsername || $invalidEmail || !$passwordsMatch || $userExists){
+    if($emptyInputs || $invalidUsername || $invalidEmail || !$passwordsMatch){
         $errorQueryString.="error=true";
     }
 
@@ -38,19 +39,16 @@ if(isset($_POST["submit"])){
     if(!$passwordsMatch){
         $errorQueryString.="&passwordsdonotmatch=true";
     }
-    if($userExists){
-        $errorQueryString.="&userExists=true";
-    }
 
     if($errorQueryString !== ""){
-        header("location: ../register.php?".$errorQueryString);
+        header("location: ../profile.php?".$errorQueryString);
         exit();
     }
 
-    registerUser($conn,$username,$password,$email,$firstName,$lastName,$dob,null);
+    editUser($conn,$userId,$password,$email,$firstName,$lastName,$dob);
 
-    header("location: ../register.php?success=true");
+    header("location: ../profile.php?success=true");
 }
 else{
-    header("location: ../register.php");
+    header("location: ../profile.php");
 }

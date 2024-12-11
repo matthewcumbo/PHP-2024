@@ -1,13 +1,13 @@
 <?php 
 include 'includes/header.php'; 
 
-if(isset($_GET["userId"])){
-    $userId = $_GET["userId"];
+if(isset($_SESSION["userId"])){
+    $userId = $_SESSION["userId"];
     include 'includes/profile-inc.php';
 }
 else{
-    // header("location:register.php");
-    // exit();
+    header("location:register.php");
+    exit();
 }
 
 ?>
@@ -21,6 +21,13 @@ else{
     <div class="row">
         <div class="col">
                 <div class="container my-1 py-2">
+                    <?php if(isset($user["imageUrl"])) : ?>
+                    <div class="row">
+                        <div class="col-12">
+                            <img src="<?php echo substr($user["imageUrl"],3); ?>" alt="User's uploaded image" style="width:100px;height:auto;display:block;">
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <div class="row">
                         <div class="col-6 text-end">
                             <label for="email">Email Address:</label>
