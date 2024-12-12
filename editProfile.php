@@ -1,5 +1,14 @@
 <?php include 'includes/header.php'; ?>
 
+<?php 
+
+if (!isset($_SESSION["username"])){
+    header("location: login.php");
+    exit();
+}
+
+?>
+
 <div class="container border border-dark rounded p-2 my-3" style="width:1024px;">
     <div class="row">
         <div class="col text-center">
